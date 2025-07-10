@@ -14,12 +14,12 @@
 #      feh
       zoxide
       bat
-#      xfce.thunar
-#      zathura
-#      xfce.thunar-volman
+     xfce.thunar
+     xfce.thunar-volman
 #      gopls
 #      go
       eza
+      zathura
       fzf
       ripgrep
 #      transmission_4-gtk
@@ -31,7 +31,7 @@
 #      swaylock
 #      swaybg
 #      swayidle
-#      wl-clipboard
+     wl-clipboard
 #      grim
 #      nwg-displays
 #      slurp
@@ -39,6 +39,8 @@
 #      yazi
       signal-desktop
       teams-for-linux
+      swaybg
+      xdg-desktop-portal-gnome
     ];
   };
   gtk = {
@@ -46,7 +48,10 @@
     iconTheme.name = "Nordzy";
   };
   programs = {
-#    swaylock.enable = true;
+    alacritty.enable = true;
+    fuzzel.enable = true;
+    waybar.enable = true;
+    swaylock.enable = true;
     starship.enable = true;
     direnv = {
       enable = true;
@@ -72,12 +77,13 @@
 
   fonts.fontconfig.enable = true;
 
-#services = {
-#    swaync.enable = true;
-#    swayidle = {
-#      enable = true;
-#    };
-#  };
+services = {
+   swaync.enable = true;
+    # mako.enable = true;
+    swayidle = {
+      enable = true;
+    };
+  };
 
     programs.home-manager.enable = true;
     home.stateVersion = "24.05";

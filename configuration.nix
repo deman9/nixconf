@@ -9,26 +9,37 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
 #      ./modules/pcloud.nix
-#      ./modules/sylix.nix
+     ./modules/sylix.nix
 	inputs.hardware.nixosModules.common-cpu-intel
     ];
 
   systemd.services.zfs-mount.enable = false;
-  networking.hostId = "8c98794c";
-#  boot.loader.systemd-boot.enable = true;
-#  boot.loader.efi.canTouchEfiVariables = true;
-   boot.tmp.cleanOnBoot = true;
-	boot.loader.grub.enable = true;
-	boot.loader.grub.device = "nodev";
-  boot.kernelParams = [ "video=HDMI-A-1:2560x1440@60" "video=eDP-1:1920x1080"];
-  boot.initrd.availableKernelModules = [ "i915" ];
-  
-  networking.hostName = "nixos"; # Define your hostname.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  boot = {
+  	loader.systemd-boot.enable = true;
+	tmp.cleanOnBoot = true;
+	kernelParams = [ "quiet" "video=HDMI-A-1:2560x1440@60" "video=eDP-1:1920x1080"];
+	initrd.availableKernelModules = [ "i915" ];
+	initrd.systemd.enable = true;
+	plymouth.enable = true;
+	};
+
+  networking = {
+	hostId = "8c98794c";
+	hostName = "nixos"; # Define your hostname.
+	networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+	};
+
+
+
   nixpkgs.config.allowUnfree = true;
-  # Set your time zone.
   time.timeZone = "Europe/Warsaw";
 
+  hardware.graphics.enable = true;
+  hardware.graphics.extraPackages = with pkgs; [ vaapiIntel intel-media-driver ];
+  hardware = {
+#  	printers = true;
+	bluetooth.enable = true;
+	};
   system.autoUpgrade = {
 	enable = true;
 	dates = "daily";
@@ -60,17 +71,28 @@
   # };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
+  security.pam.services.swaylock = {};
+  security.rtkit.enable = true;
 
   services = {
+	xserver.enable = true;
   	zfs.autoScrub.enable = true;
-	displayManager.gdm.enable = true;
-	desktopManager.gnome.enable = true;
+#	displayManager.gdm.enable = true;
+#	desktopManager.gnome.enable = true;
+	gnome.gnome-keyring.enable =true;
+	blueman.enable=true;
+
 	printing.enable = true;
+	avahi = {
+	    enable = true;
+	    nssmdns4 = true;
+	    openFirewall = true;
+	    };
 	pipewire = {
 	    enable = true;
 	    pulse.enable = true;
+	    alsa.enable = true;
+	    alsa.support32Bit = true;
 	  };
 	  openssh.enable = true;
 };
@@ -99,13 +121,31 @@ environment = {
     	git
 	unzip
     	wget
+	pavucontrol
 	pciutils
 	neovim
 	nil
 	ghostty
   ];
 };
-
+  # gnome remove packages
+  environment.gnome.excludePackages = (with pkgs; [
+    gnome-photos
+    gnome-tour
+    gnome-text-editor
+  ]) ++ (with pkgs; [
+    cheese # webcam tool
+    gnome-contacts
+    gnome-clocks
+    gnome-music
+    gnome-maps
+    epiphany # web browser
+    geary # email reader
+    gnome-characters
+    gnome-weather
+    simple-scan
+    totem # video player
+  ]);
 programs = {
 	fish.enable = true;
 	firefox.enable = true;
@@ -116,6 +156,7 @@ programs = {
     		enable = true;
     		enableSSHSupport = true;
   		};
+	niri.enable = true;
 };
 
 
