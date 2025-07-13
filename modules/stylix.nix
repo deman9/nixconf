@@ -5,7 +5,7 @@
 {
 stylix = {
     enable = true;
-    image =./ign_robots.png;
+    image =./desktop/ign_robots.png;
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
     fonts = {
@@ -14,9 +14,10 @@ stylix = {
 
       };
       monospace = {
-      # package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
-        package = pkgs.nerd-fonts.jetbrains-mono;
+      package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+        # package = pkgs.nerd-fonts.iosevka-term;
       name = "JetBrainsMono Nerd Font Mono";
+      # name = "Iosevka Term";
     };
     sansSerif = {
       package = pkgs.noto-fonts;

@@ -1,46 +1,53 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
-#    ./modules/nvim/nvim.nix
-#    ./modules/sway.nix
+    ./modules/nvim/nvim.nix
+    #    ./modules/sway.nix
+    ./modules/desktop/waybar.nix
+    ./modules/desktop/niri.nix
   ];
+
+  home.sessionVariables.NIXOS_OZONE_WL = "1";
 
   home = {
     username = "deman";
     homeDirectory = "/home/deman";
     packages = with pkgs; [
       fastfetch
-#      feh
       zoxide
       bat
-     xfce.thunar
-     xfce.thunar-volman
-#      gopls
-#      go
       eza
       zathura
       fzf
       ripgrep
-#      transmission_4-gtk
-#      swaynotificationcenter
-#      rofi-wayland
-#      rofi-bluetooth
-#      rofi-power-menu
-#      waybar
-#      swaylock
-#      swaybg
-#      swayidle
-     wl-clipboard
-#      grim
-#      nwg-displays
-#      slurp
+      transmission_4-gtk
+      swaynotificationcenter
+      #      rofi-wayland
+      #      rofi-bluetooth
+      #      rofi-power-menu
+      #      swaylock
+      wl-clipboard
+      #      grim
+      #      slurp
+      nixfmt-rfc-style
       tutanota-desktop
-#      yazi
+      yazi
       signal-desktop
       teams-for-linux
       swaybg
+      nerd-fonts.symbols-only
+      nerd-fonts.iosevka
+      nerd-fonts.iosevka-term
+      nerd-fonts.jetbrains-mono
       xdg-desktop-portal-gnome
+      xfce.tumbler
+      xwayland-satellite
     ];
   };
   gtk = {
@@ -48,9 +55,8 @@
     iconTheme.name = "Nordzy";
   };
   programs = {
-    alacritty.enable = true;
     fuzzel.enable = true;
-    waybar.enable = true;
+    # swaync.enable = true;
     swaylock.enable = true;
     starship.enable = true;
     direnv = {
@@ -75,16 +81,33 @@
 
   };
 
+  services.blueman-applet.enable = true;
+  services.network-manager-applet.enable = true;
+
   fonts.fontconfig.enable = true;
 
-services = {
-   swaync.enable = true;
-    # mako.enable = true;
+  programs.ghostty = {
+    enable = true;
+    enableFishIntegration = true;
+    installVimSyntax = true;
+    settings = {
+      font-size = 10;
+    };
+  };
+  services = {
+    swaync.enable = true;
+    # mako = {
+    #   enable = true;
+    #   settings = {
+    #     default-timeout = "1";
+    #   };
+    # };
     swayidle = {
       enable = true;
     };
   };
 
-    programs.home-manager.enable = true;
-    home.stateVersion = "24.05";
+
+  programs.home-manager.enable = true;
+  home.stateVersion = "24.05";
 }
