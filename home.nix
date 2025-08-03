@@ -7,13 +7,17 @@
 
 {
   imports = [
-    ./modules/nvim/nvim.nix
+    ./modules/nvim_lazy/nvim_lazy.nix
+    # ./modules/nvim/nvim.nix
     #    ./modules/sway.nix
     ./modules/desktop/waybar.nix
     ./modules/desktop/niri.nix
   ];
 
-  home.sessionVariables.NIXOS_OZONE_WL = "1";
+  home.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    EDITOR = "nvim";
+  };
 
   home = {
     username = "deman";
@@ -28,7 +32,7 @@
       ripgrep
       transmission_4-gtk
       swaynotificationcenter
-      #      rofi-wayland
+      rofi-wayland
       #      rofi-bluetooth
       #      rofi-power-menu
       #      swaylock
@@ -40,6 +44,7 @@
       yazi
       signal-desktop
       teams-for-linux
+      blueman
       swaybg
       nerd-fonts.symbols-only
       nerd-fonts.iosevka
@@ -58,6 +63,7 @@
     fuzzel.enable = true;
     # swaync.enable = true;
     swaylock.enable = true;
+    fzf.enable = true;
     starship.enable = true;
     direnv = {
       enable = true;
@@ -82,7 +88,7 @@
   };
 
   services.blueman-applet.enable = true;
-  services.network-manager-applet.enable = true;
+  # services.network-manager-applet.enable = true;
 
   fonts.fontconfig.enable = true;
 

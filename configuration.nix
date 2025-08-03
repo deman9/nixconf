@@ -79,6 +79,8 @@
     };
   };
 
+  xdg.portal.enable = true;
+  xdg.icons.enable = true;
   # xdg.portal = {
   #   enable = true;
   #   config.common.default = "*";
@@ -180,6 +182,8 @@
       pavucontrol
       pciutils
       neovim
+      nordzy-icon-theme
+      nordzy-cursor-theme
       nil
       ghostty
     ];

@@ -9,6 +9,7 @@
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
+      withNodeJs = true;
       extraLuaConfig = ''
         ${builtins.readFile ./options.lua}
         ${builtins.readFile ./plugin/cmp.lua}

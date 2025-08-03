@@ -12,21 +12,22 @@ programs.waybar = {
         font-size: 12px;
         border: none;
         border-radius: 0;
+        padding: 0;
     }
   '';
     settings = {
       mainBar = {
         layer = "top";
         position = "top";
-        height = 35;
+        height = 16;
         spacing = 1;
         modules-left = [ "niri/workspaces"  ];
         modules-center = [  "niri/window"];
-        modules-right = [ "idle_inhibitor" "pulseaudio" "battery" "custom/notification" "tray" "clock" ];
+        modules-right = [ "idle_inhibitor"  "pulseaudio" "battery" "network" "bluetooth"  "tray" "clock" ];
 
         "niri/workspaces" = {
           icon-size = 9;
-          format = "{icon} {value}";
+          format = "{value}";
           format-icons = {
             active = "";
             default = "";
@@ -35,8 +36,18 @@ programs.waybar = {
  
         "niri/window" = {
           icon = true;
+          icon-size = 18;
         };
  
+        "network" = {
+        interval = 1;
+        format-alt = "{ifname}: {ipaddr}/{cidr}";
+        format-disconnected = "Disconnected ⚠";
+        format-ethernet = "{ifname}: {ipaddr}/{cidr}   up: {bandwidthUpBits} down: {bandwidthDownBits}";
+        format-linked = "{ifname} (No IP) ";
+        format-wifi = "{essid} ({signalStrength}%) ";
+        on-click = "";
+        };
         idle_inhibitor = {
           format = "{icon}";
           format-icons = {
@@ -56,6 +67,10 @@ programs.waybar = {
           on-click = "${lib.getExe pkgs.pwvucontrol}";
         };
  
+        "bluetooth" = {
+          on-click = "blueman-manager";
+        };
+
         clock = {
           format = "{:%H:%M}  ";
           format-alt = "{:%A; %B %d, %Y (%R)}  ";
@@ -139,8 +154,11 @@ programs.waybar = {
  
         tray = {
           show-passsive-items = true;
-          icon-size = 21;
+          icon-size = 15;
           spacing = 10;
+          icons = {
+            "blueman" = "bluetooth";
+          };
         };
 
 
