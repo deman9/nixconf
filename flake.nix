@@ -9,8 +9,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     niri = {
-        url = "github:sodiboo/niri-flake"; 
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hardware.url = "github:nixos/nixos-hardware";
   };
@@ -20,6 +20,7 @@
       self,
       nixpkgs,
       home-manager,
+      stylix,
       ...
     }@inputs:
     {
@@ -29,18 +30,13 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./configuration.nix
-          inputs.stylix.nixosModules.stylix
+          stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.deman = import ./home.nix;
           }
-          # {
-          #   nixpkgs.overlays = import ./overlays {
-          #     inherit inputs "x86_64-linux";
-          #   };
-          # }
         ];
       };
     };

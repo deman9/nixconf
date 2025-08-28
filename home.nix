@@ -8,6 +8,7 @@
 {
   imports = [
     ./modules/nvim_lazy/nvim_lazy.nix
+    ./modules/tmux.nix
     # ./modules/nvim/nvim.nix
     #    ./modules/sway.nix
     ./modules/desktop/waybar.nix
@@ -15,7 +16,7 @@
   ];
 
   home.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
+    # NIXOS_OZONE_WL = "1";
     EDITOR = "nvim";
   };
 
@@ -23,11 +24,13 @@
     username = "deman";
     homeDirectory = "/home/deman";
     packages = with pkgs; [
-      fastfetch
+      swww
       zoxide
       bat
       eza
       zathura
+      vlc
+      dissent
       fzf
       ripgrep
       transmission_4-gtk
@@ -52,7 +55,7 @@
       nerd-fonts.jetbrains-mono
       xdg-desktop-portal-gnome
       xfce.tumbler
-      xwayland-satellite
+      # xwayland-satellite
     ];
   };
   gtk = {
@@ -97,22 +100,16 @@
     enableFishIntegration = true;
     installVimSyntax = true;
     settings = {
+      background-opacity = 0.85;
       font-size = 10;
     };
   };
   services = {
     swaync.enable = true;
-    # mako = {
-    #   enable = true;
-    #   settings = {
-    #     default-timeout = "1";
-    #   };
-    # };
     swayidle = {
       enable = true;
     };
   };
-
 
   programs.home-manager.enable = true;
   home.stateVersion = "24.05";

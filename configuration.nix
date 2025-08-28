@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 {
   config,
   # lib,
@@ -12,9 +8,8 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./modules/pcloud.nix
+    # ./modules/pcloud.nix
     #     ./modules/sylix.nix
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.niri.nixosModules.niri
@@ -47,6 +42,7 @@
   hardware.graphics.extraPackages = with pkgs; [
     vaapiIntel
     intel-media-driver
+    vpl-gpu-rt
   ];
   hardware = {
     bluetooth.enable = true;
@@ -60,7 +56,6 @@
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
   nix = {
-    # nix-path = config.nix.nixPath;
     optimise.automatic = true;
     settings = {
       auto-optimise-store = true;
@@ -79,17 +74,16 @@
     };
   };
 
-  xdg.portal.enable = true;
   xdg.icons.enable = true;
-  # xdg.portal = {
-  #   enable = true;
-  #   config.common.default = "*";
-  #   extraPortals = with pkgs; [
-  #     xdg-desktop-portal-gtk
-  #     xdg-desktop-portal-wlr
-  #     xdg-desktop-portal-gnome
-  #   ];
-  # };
+  xdg.portal = {
+    enable = true;
+    config.common.default = "gnome";
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      #     xdg-desktop-portal-wlr
+      xdg-desktop-portal-gnome
+    ];
+  };
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
@@ -110,6 +104,7 @@
     printing.enable = true;
     gvfs.enable = true;
     dbus.enable = true;
+    dbus.packages = [ pkgs.nautilus ];
     avahi = {
       enable = true;
       nssmdns4 = true;
@@ -140,7 +135,7 @@
         # package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
         package = pkgs.nerd-fonts.jetbrains-mono;
         # package = pkgs.nerd-fonts.iosevka;
-      # name = "Iosevka";
+        # name = "Iosevka";
         name = "JetBrainsMono Nerd Font Mono";
       };
       sansSerif = {
@@ -173,14 +168,18 @@
 
   environment = {
     variables.EDITOR = "nvim";
+    variables.NIXOS_OZONE_WL = "1";
     systemPackages = with pkgs; [
       vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       git
       unzip
+      pcloud
       wget
       fuse
       pavucontrol
       pciutils
+      xwayland-satellite-unstable
+      wayland-utils
       neovim
       nordzy-icon-theme
       nordzy-cursor-theme
@@ -188,7 +187,6 @@
       ghostty
     ];
   };
-
 
   programs = {
     fish.enable = true;
@@ -199,21 +197,21 @@
     xfconf.enable = true;
     thunar = {
       enable = true;
-      plugins = with pkgs.xfce; [ thunar-archive-plugin thunar-volman ];
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
     };
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
 
-
-
-
     niri = {
       enable = true;
-      package = pkgs.niri-stable;
+      package = pkgs.niri-unstable;
       # settings.environment."NIXOS_OZONE_WL" = "1";
-  };
+    };
   };
 
   fonts = {
